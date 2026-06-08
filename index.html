@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ศูนย์ประสานงานเยาวชนอำเภอกรงปินัง "NADI"</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#F97316',    /* สีส้ม */
+                            secondary: '#FFFFFF',  /* สีขาว */
+                            accent: '#374151',     /* สีเทาเข้ม */
+                            bg: '#F3F4F6',         /* สีเทาอ่อน */
+                            dark: '#1F2937'        /* สีเทาเกือบดำ */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Prompt, Inter & Sarabun -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Prompt', 'Sarabun', 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-brand-accent min-h-screen flex flex-col justify-between">
+
+    <!-- ================= NOTIFICATION BANNER (ระบบแจ้งเตือน) ================= -->
+    <div id="top-notification" class="bg-orange-600 text-white text-center py-2 px-4 text-xs font-semibold relative z-50 flex items-center justify-center gap-2 hidden transition-all duration-300">
+        <span id="notification-text">📢 ยินดีต้อนรับสู่ระบบใหม่ล่าสุดของศูนย์ประสานงาน NADI!</span>
+        <button onclick="closeNotification()" class="hover:text-gray-200 ml-2"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="bg-brand-accent text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Branding -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center shadow-md shadow-orange-500/30">
+                        <span class="text-white font-extrabold text-lg">N</span>
+                    </div>
+                    <div>
+                        <p class="font-bold text-sm tracking-wide leading-tight">ศปย.อ.กรงปินัง</p>
+                        <p class="text-[10px] text-gray-300 font-light">NADI Youth & Rescue Center</p>
+                    </div>
+                </div>
+                
+                <!-- Menu (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <button onclick="navigateTo('home')" class="nav-link text-white font-medium transition-colors duration-200 hover:text-brand-primary text-sm" data-page="home">หน้าแรก</button>
+                    <button onclick="navigateTo('about')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="about">เกี่ยวกับศูนย์</button>
+                    <button onclick="navigateTo('committee')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="committee">คณะกรรมการ</button>
+                    <button onclick="navigateTo('news')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="news">ข่าวสาร</button>
+                    <button onclick="navigateTo('events')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="events">กิจกรรม</button>
+                    <button onclick="navigateTo('downloads')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="downloads">ดาวน์โหลด</button>
+                    <button onclick="navigateTo('apply-activity')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="apply-activity">สมัครกิจกรรม</button>
+                    <button onclick="navigateTo('gallery')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="gallery">คลังภาพ</button>
+                    <button onclick="navigateTo('contact')" class="nav-link text-gray-300 transition-colors duration-200 hover:text-brand-primary text-sm" data-page="contact">ติดต่อเรา</button>
+                    
+                    <span class="text-gray-600">|</span>
+
+                    <!-- Auth buttons area -->
+                    <div id="nav-auth-area" class="flex items-center gap-2">
+                        <button onclick="navigateTo('login')" class="text-xs text-white border border-gray-600 px-3 py-1.5 rounded-xl hover:bg-gray-700 hover:text-brand-primary transition-all duration-200">เข้าสู่ระบบ</button>
+                        <button onclick="navigateTo('register')" class="text-xs bg-brand-primary text-white px-3 py-1.5 rounded-xl hover:bg-orange-600 transition-all duration-200 shadow-sm">สมัครสมาชิก</button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-lg bg-gray-800">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-accent border-t border-gray-700 px-4 pt-2 pb-4 space-y-2 shadow-inner">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="block w-full text-left text-white py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">หน้าแรก</button>
+            <button onclick="navigateTo('about'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">เกี่ยวกับศูนย์</button>
+            <button onclick="navigateTo('committee'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">คณะกรรมการ</button>
+            <button onclick="navigateTo('news'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">ข่าวสาร</button>
+            <button onclick="navigateTo('events'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">กิจกรรม</button>
+            <button onclick="navigateTo('downloads'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">ดาวน์โหลด</button>
+            <button onclick="navigateTo('apply-activity'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">สมัครกิจกรรม</button>
+            <button onclick="navigateTo('gallery'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">คลังภาพ</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu()" class="block w-full text-left text-gray-300 py-2 px-3 rounded-xl hover:bg-gray-800 text-sm">ติดต่อเรา</button>
+            <div class="border-t border-gray-700 my-2"></div>
+            <div id="nav-auth-area-mobile" class="space-y-2">
+                <button onclick="navigateTo('login'); toggleMobileMenu()" class="block w-full text-center bg-gray-800 text-white py-2 rounded-xl text-sm border border-gray-700 hover:bg-gray-700">เข้าสู่ระบบ</button>
+                <button onclick="navigateTo('register'); toggleMobileMenu()" class="block w-full text-center bg-brand-primary text-white py-2 rounded-xl text-sm font-semibold hover:bg-orange-600">สมัครสมาชิก</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= MAIN CONTENT CONTAINER ================= -->
+    <main class="flex-grow">
+
+        <!-- ================= 1. PAGE: HOME (หน้าแรก) ================= -->
+        <div id="page-home" class="page active">
+            <!-- Hero Banner ขนาดใหญ่ -->
+            <div class="relative bg-brand-accent text-white overflow-hidden py-24 md:py-32 px-4 sm:px-6 lg:px-8">
+                <!-- Background Image Overlay -->
+                <div class="absolute inset-0 z-0">
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/5522618398499004583_0" alt="[รูปภาพกิจกรรมอาสาพัฒนาของเครือข่ายเยาวชนอำเภอกรงปินัง]" class="w-full h-full object-cover opacity-30 object-center">
+                    <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/90 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-accent to-transparent"></div>
+                </div>
+
+                <div class="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-6">
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-orange-500/10 text-brand-primary border border-brand-primary/20 backdrop-blur-sm animate-pulse">
+                            <span class="w-2 h-2 rounded-full bg-brand-primary"></span>
+                            ศูนย์ประสานงานเพื่อชุมชนและเยาวชนกรงปินัง
+                        </span>
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
+                            ศูนย์ประสานงานเยาวชน<br><span class="text-brand-primary">อำเภอกรงปินัง</span>
+                        </h1>
+                        <p class="text-sm sm:text-base text-gray-300 font-light leading-relaxed max-w-xl">
+                            Center Penyelarasanpemuda-pemudiD.krongpinang
+                        </p>
+                        <!-- ข้อความต้อนรับ -->
+                        <p class="text-xs sm:text-sm text-gray-400">ยินดีต้อนรับสู่พื้นที่ส่วนกลางเพื่อการขับเคลื่อนศักยภาพเยาวชน การช่วยเหลือสังคม และความปลอดภัยทางกู้ภัยกู้ชีพในพื้นที่กรงปินัง</p>
+                        
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="navigateTo('register')" class="bg-brand-primary text-white hover:bg-orange-600 px-6 py-3 rounded-2xl font-semibold shadow-lg shadow-orange-500/25 transition-all duration-300 flex items-center gap-2 hover:scale-[1.02]">
+                                <i class="fa-solid fa-user-plus"></i> สมัครสมาชิกทั่วไป
+                            </button>
+                            <button onclick="navigateTo('contact')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-2xl font-semibold backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-[1.02]">
+                                <i class="fa-solid fa-headset"></i> ติดต่อศูนย์
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Majestic Overlay "NADI" -->
+                    <div class="lg:col-span-5 flex flex-col items-center justify-center text-center lg:text-right lg:items-end mt-8 lg:mt-0">
+                        <div class="relative inline-block select-none group">
+                            <div class="absolute -inset-1 rounded-3xl bg-brand-primary opacity-30 blur-2xl group-hover:opacity-55 transition duration-1000"></div>
+                            <div class="relative bg-white/5 border border-white/10 rounded-3xl px-12 py-8 backdrop-blur-md shadow-2xl">
+                                <h2 class="text-7xl sm:text-8xl lg:text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-brand-primary to-orange-400 tracking-wider">
+                                    NADI
+                                </h2>
+                                <p class="text-white text-xs tracking-widest uppercase font-bold text-center mt-2">
+                                    นาดี • พลังเยาวชนกรงปินัง
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview (สถิติสมาชิกและสถิติกิจกรรม) -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                        <p class="text-xs text-gray-400 font-semibold uppercase">จำนวนสมาชิกทั้งหมด</p>
+                        <h3 id="homeStatMembers" class="text-3xl font-extrabold text-brand-primary mt-1">1,240</h3>
+                        <p class="text-[10px] text-gray-500 mt-1">คน (อัปเดตเรียลไทม์)</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                        <p class="text-xs text-gray-400 font-semibold uppercase">จำนวนกิจกรรมชุมชน</p>
+                        <h3 id="homeStatEvents" class="text-3xl font-extrabold text-brand-accent mt-1">48</h3>
+                        <p class="text-[10px] text-gray-500 mt-1">โครงการตลอดปี</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                        <p class="text-xs text-gray-400 font-semibold uppercase">ข่าวสารและประกาศ</p>
+                        <h3 id="homeStatNews" class="text-3xl font-extrabold text-brand-accent mt-1">112</h3>
+                        <p class="text-[10px] text-gray-500 mt-1">เรื่องประชาสัมพันธ์</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                        <p class="text-xs text-gray-400 font-semibold uppercase">จำนวนผู้เข้าสมัครร่วมกิจกรรม</p>
+                        <h3 id="homeStatApplicants" class="text-3xl font-extrabold text-emerald-600 mt-1">320</h3>
+                        <p class="text-[10px] text-gray-500 mt-1">รายชื่อได้รับการอนุมัติ</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INCIDENT REPORTING PORTAL (ระบบแจ้งเหตุด้วย) -->
+            <div class="bg-white py-12 border-t border-b border-gray-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        <!-- Left: Form -->
+                        <div class="lg:col-span-7 bg-brand-bg rounded-3xl p-6 border border-gray-200 shadow-sm">
+                            <span class="text-xs font-semibold text-brand-primary bg-orange-100 px-3 py-1 rounded-full uppercase">Emergency Portal</span>
+                            <h2 class="text-2xl font-bold text-brand-accent mt-2">แจ้งเหตุความต้องการด่วน / ขอความช่วยเหลือ</h2>
+                            <p class="text-gray-500 text-xs mt-1">กรอกข้อมูลด่วนเพื่อประสานงานทีมอาสากู้ภัยกูชีพกรงปินัง</p>
+                            
+                            <form id="homeIncidentForm" onsubmit="handleHomeIncident(event)" class="space-y-4 mt-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <input type="text" id="homeIncName" placeholder="ชื่อผู้แจ้ง" required class="px-4 py-2 text-sm rounded-xl border border-gray-300 w-full focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                                    <input type="tel" id="homeIncPhone" placeholder="เบอร์โทรติดต่อกลับ" required class="px-4 py-2 text-sm rounded-xl border border-gray-300 w-full focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <select id="homeIncCat" class="px-4 py-2 text-sm rounded-xl border border-gray-300 w-full focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                                        <option value="อุทกภัย / น้ำท่วม">🌊 อุทกภัย / น้ำท่วม</option>
+                                        <option value="ช่วยเหลือผู้ประสบภัย">🆘 ขอความช่วยเหลือฉุกเฉิน</option>
+                                        <option value="อุบัติเหตุทางถนน">🚗 อุบัติเหตุทางถนน</option>
+                                        <option value="ปัญหาชุมชนด่วน">📍 ปัญหาความเดือดร้อนเร่งด่วน</option>
+                                    </select>
+                                    <input type="text" id="homeIncLoc" placeholder="พิกัดสถานที่เกิดเหตุ" required class="px-4 py-2 text-sm rounded-xl border border-gray-300 w-full focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                                </div>
+                                <textarea id="homeIncDetail" placeholder="อธิบายรายละเอียดความช่วยเหลือและสิ่งที่ต้องการ..." required rows="2" class="px-4 py-2 text-sm rounded-xl border border-gray-300 w-full focus:outline-none focus:ring-1 focus:ring-brand-primary"></textarea>
+                                <button type="submit" class="w-full bg-brand-primary text-white hover:bg-orange-600 py-2.5 rounded-xl text-sm font-semibold shadow transition duration-200">ส่งข้อมูลความคืบหน้าแจ้งเหตุ</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Right: Live feed of incidents -->
+                        <div class="lg:col-span-5 space-y-4">
+                            <div class="bg-gray-50 border border-gray-200 p-6 rounded-3xl">
+                                <h3 class="font-bold text-base text-brand-accent flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping"></span>
+                                    ติดตามรายงานสถานะเหตุการณ์ช่วยเหลือล่าสุด
+                                </h3>
+                                <div id="homeIncidentFeed" class="mt-4 space-y-3 max-h-[220px] overflow-y-auto">
+                                    <!-- Dynamic elements -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ข่าวประชาสัมพันธ์ล่าสุด (3 ชิ้น) -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-brand-accent">ข่าวประชาสัมพันธ์ล่าสุด</h2>
+                        <p class="text-gray-500 text-xs mt-1">เกาะติดข่าวสารและความช่วยเหลือเยาวชนอย่างรวดเร็ว</p>
+                    </div>
+                    <button onclick="navigateTo('news')" class="text-sm font-bold text-brand-primary hover:underline">ข่าวทั้งหมด <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+                <div id="homeNewsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Dynamic home news -->
+                </div>
+            </div>
+
+            <!-- กิจกรรมที่กำลังเปิดรับสมัคร -->
+            <div class="bg-orange-50/50 py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-brand-accent">กิจกรรมที่กำลังเปิดรับสมัคร</h2>
+                            <p class="text-gray-500 text-xs mt-1">เข้าร่วมขับเคลื่อนเพื่อสังคมกรงปินังร่วมกัน</p>
+                        </div>
+                        <button onclick="navigateTo('events')" class="text-sm font-bold text-brand-primary hover:underline">กิจกรรมทั้งหมด <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <div id="homeEventsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Dynamic home events -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- แกลเลอรี่รูปภาพล่าสุด -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-brand-accent">คลังภาพและผลงานล่าสุด</h2>
+                        <p class="text-gray-500 text-xs mt-1">ภาพประทับใจจากการปฏิบัติการภาคสนามของสมาชิก</p>
+                    </div>
+                    <button onclick="navigateTo('gallery')" class="text-sm font-bold text-brand-primary hover:underline">ดูคลังภาพ <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="h-44 bg-gray-200 rounded-2xl overflow-hidden shadow-sm relative group">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/9484322452800186554_0" alt="[รูปภาพกิจกรรมบรรเทาสาธารณภัยกรงปินัง]" class="w-full h-full object-cover transition duration-300 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-semibold transition duration-200">งานจิตอาสาภัยพิบัติ</div>
+                    </div>
+                    <div class="h-44 bg-gray-200 rounded-2xl overflow-hidden shadow-sm relative group">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/5522618398499004583_0" alt="[รูปภาพประชุมวางแผนคณะกรรมการเยาวชน]" class="w-full h-full object-cover transition duration-300 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-semibold transition duration-200">ประชุมระดมความคิดเห็น</div>
+                    </div>
+                    <div class="h-44 bg-gray-200 rounded-2xl overflow-hidden shadow-sm relative group">
+                        <div class="w-full h-full bg-brand-accent/20 flex items-center justify-center text-gray-500 text-xs">ภาพความสำเร็จ</div>
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-semibold transition duration-200">ลงพื้นที่อบรม CPR</div>
+                    </div>
+                    <div class="h-44 bg-gray-200 rounded-2xl overflow-hidden shadow-sm relative group">
+                        <div class="w-full h-full bg-brand-accent/10 flex items-center justify-center text-gray-400 text-xs">กิจกรรมสุนทรียภาพ</div>
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-semibold transition duration-200">แนะแนวเยาวชน</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 2. PAGE: ABOUT (เกี่ยวกับศูนย์) ================= -->
+        <div id="page-about" class="page">
+            <div class="max-w-4xl mx-auto px-4 py-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-extrabold text-brand-accent">เกี่ยวกับศูนย์ประสานงาน NADI</h2>
+                    <p class="text-brand-primary text-sm mt-1">Center Penyelarasanpemuda-pemudiD.krongpinang</p>
+                </div>
+
+                <div class="space-y-8 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm text-sm sm:text-base leading-relaxed text-gray-600">
+                    <div>
+                        <h3 class="text-lg font-bold text-brand-accent mb-2 border-l-4 border-brand-primary pl-3">ประวัติความเป็นมา</h3>
+                        <p>ศูนย์ประสานงานเยาวชนอำเภอกรงปินัง ก่อตั้งขึ้นเพื่อเป็นพื้นที่รวมกลุ่มของคนรุ่นใหม่และเครือข่ายเยาวชนจิตอาสาในอำเภอกรงปินัง จังหวัดยะลา ภายใต้ชื่อย่อและสัญลักษณ์กลุ่ม "NADI" (นาดี) ซึ่งมีความหมายว่า พลังขับเคลื่อน เส้นเลือดใหญ่ และจุดศูนย์กลางในการเชื่อมประสานการพัฒนาท้องถิ่นและบรรเทาสาธารณภัยทุกรูปแบบ</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-brand-accent mb-2 border-l-4 border-brand-primary pl-3">วิสัยทัศน์ (Vision)</h3>
+                        <p class="italic text-brand-accent">"มุ่งสร้างเยาวชนกรงปินังให้มีจิตอาสา เก่งวิชาการและการจัดการภัยพิบัติ ผสานพลังคนรุ่นใหม่ขับเคลื่อนสังคมสู่ความสงบสุขและเท่าเทียม"</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-brand-accent mb-2 border-l-4 border-brand-primary pl-3">พันธกิจ (Mission)</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>ประสานงานและจัดทำมาตรการช่วยเหลือ บรรเทาอุทกภัย ดินถล่ม และภัยพิบัติร่วมกับจังหวัดอย่างเป็นระบบ</li>
+                            <li>พัฒนาขีดความสามารถ ทักษะอาชีพ และการคิดวิเคราะห์เชิงสร้างสรรค์ของเยาวชน</li>
+                            <li>เป็นศูนย์กลางในการรวบรวมความรู้ ข้อมูลข่าวสารความปลอดภัย และการกู้ชีพขั้นพื้นฐาน</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-brand-accent mb-2 border-l-4 border-brand-primary pl-3">เป้าหมายการดำเนินงาน</h3>
+                        <p>มุ่งขยายขอบเขตการช่วยเหลือให้ครอบคลุมทั้ง 4 ตำบลของอำเภอกรงปินัง และฝึกอาสาสมัครเยาวชนคนกู้ภัยให้ได้ใบรับรองมาตรฐานอย่างน้อย 150 นาย ภายในปี 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 3. PAGE: COMMITTEE (คณะกรรมการบริหาร) ================= -->
+        <div id="page-committee" class="page">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-extrabold text-brand-accent">คณะกรรมการบริหารและทีมงาน</h2>
+                    <p class="text-gray-500 text-sm mt-1">ผู้ขับเคลื่อนระบบและกองอำนวยการประสานงาน NADI กรงปินัง</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Director Card -->
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center">
+                        <div class="w-24 h-24 bg-brand-primary/10 rounded-full flex items-center justify-center mx-auto text-brand-primary font-bold text-2xl mb-4">
+                            มซ
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-accent">นายมูฮัมหมัด ซากี</h3>
+                        <p class="text-brand-primary text-xs font-semibold mt-1">ประธานศูนย์และฝ่ายประสานงานหน่วยกู้ภัยสะเอะ</p>
+                        <p class="text-gray-500 text-xs mt-3 leading-relaxed">รับผิดชอบดูแลสภาวะการณ์ฉุกเฉิน สั่งการเคลื่อนพลเมื่อเกิดอุทกภัยภัยในเขตพื้นที่อำเภอกรงปินัง</p>
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center gap-4 text-xs text-gray-400">
+                            <span>📞 089-789-XXXX</span>
+                            <span>|</span>
+                            <span>📧 saki@nadi.org</span>
+                        </div>
+                    </div>
+
+                    <!-- Secretary Card -->
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center">
+                        <div class="w-24 h-24 bg-brand-primary/10 rounded-full flex items-center justify-center mx-auto text-brand-primary font-bold text-2xl mb-4">
+                            ฟอ
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-accent">นางสาวฟารีดา อูเซ็ง</h3>
+                        <p class="text-brand-primary text-xs font-semibold mt-1">เลขานุการและผู้ดูแลกิจกรรมเยาวชน</p>
+                        <p class="text-gray-500 text-xs mt-3 leading-relaxed">ดูแลฐานข้อมูลระบบ การลงทะเบียนอบรม สวัสดิการชุมชน และแผนพัฒนาศักยภาพผู้ปฏิบัติงานรุ่นใหม่</p>
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center gap-4 text-xs text-gray-400">
+                            <span>📞 082-123-XXXX</span>
+                            <span>|</span>
+                            <span>📧 farida@nadi.org</span>
+                        </div>
+                    </div>
+
+                    <!-- Public Relations Card -->
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center">
+                        <div class="w-24 h-24 bg-brand-primary/10 rounded-full flex items-center justify-center mx-auto text-brand-primary font-bold text-2xl mb-4">
+                            ฮว
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-accent">นายฮาฟิซ แวหะมะ</h3>
+                        <p class="text-brand-primary text-xs font-semibold mt-1">ฝ่ายประชาสัมพันธ์และสารสนเทศกู้ชีพ</p>
+                        <p class="text-gray-500 text-xs mt-3 leading-relaxed">รับผิดชอบด้านข่าวสารทางช่องทางหลัก และสื่อสร้างสรรค์การป้องกันภัยพิบัติระดับหมู่บ้าน</p>
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center gap-4 text-xs text-gray-400">
+                            <span>📞 081-XXXX-XXX</span>
+                            <span>|</span>
+                            <span>📧 hafiz@nadi.org</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 4. PAGE: NEWS (ข่าวประชาสัมพันธ์) ================= -->
+        <div id="page-news" class="page">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-brand-accent">ข่าวสารและประกาศจากศูนย์</h2>
+                        <p class="text-gray-500 text-sm mt-1">ติดตามประกาศสำคัญและภารกิจกู้ชีพกรงปินัง</p>
+                    </div>
+                    <!-- ระบบค้นหาข่าว & หมวดหมู่ -->
+                    <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                        <input type="text" id="newsSearchInput" oninput="filterNews()" placeholder="🔍 พิมพ์คำค้นหา..." class="px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                        <select id="newsCategoryFilter" onchange="filterNews()" class="px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                            <option value="ทั้งหมด">ทั้งหมด</option>
+                            <option value="กู้ภัยชุมชน">🚨 กู้ภัยชุมชน</option>
+                            <option value="อบรมคนรุ่นใหม่">🌟 อบรมคนรุ่นใหม่</option>
+                            <option value="บริการสังคม">🏫 บริการสังคม</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="allNewsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 5. PAGE: EVENTS (กิจกรรมเยาวชน) ================= -->
+        <div id="page-events" class="page">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-brand-accent">กิจกรรมและเวิร์กช็อปเยาวชน</h2>
+                    <p class="text-gray-500 text-sm mt-1">วัน เวลา สถานที่ จำนวนที่นั่งรับสมัคร และช่องทางตรวจสอบ</p>
+                </div>
+
+                <div id="allEventsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic events rendering -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 6. PAGE: DOWNLOADS (ดาวน์โหลดเอกสาร) ================= -->
+        <div id="page-downloads" class="page">
+            <div class="max-w-4xl mx-auto px-4 py-12">
+                <div class="mb-8 text-center">
+                    <h2 class="text-3xl font-extrabold text-brand-accent">ดาวน์โหลดเอกสารศูนย์</h2>
+                    <p class="text-gray-500 text-sm mt-1">ดาวน์โหลดเอกสาร PDF แบบฟอร์มต่าง ๆ และคู่มือความปลอดภัยกู้ชีพด่วน</p>
+                </div>
+
+                <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-brand-accent text-white text-xs">
+                                    <th class="p-4 rounded-l-xl">ชื่อเอกสาร</th>
+                                    <th class="p-4">ประเภทไฟล์</th>
+                                    <th class="p-4">วันที่ลงระบบ</th>
+                                    <th class="p-4 text-center rounded-r-xl">ดาวน์โหลด</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm divide-y divide-gray-100">
+                                <tr>
+                                    <td class="p-4 font-semibold text-brand-accent">แบบฟอร์มการสมัครกองกำลังกู้ภัยอาสาเยาวชน NADI</td>
+                                    <td class="p-4 text-gray-500 text-xs">📄 PDF</td>
+                                    <td class="p-4 text-gray-400 text-xs">8 มิ.ย. 2569</td>
+                                    <td class="p-4 text-center">
+                                        <button onclick="alert('ดาวน์โหลดเอกสารจำลองเรียบร้อย')" class="text-brand-primary hover:underline"><i class="fa-solid fa-download"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold text-brand-accent">คู่มือการปฐมพยาบาลเบื้องต้น (CPR & First Aid Manual)</td>
+                                    <td class="p-4 text-gray-500 text-xs">📄 PDF</td>
+                                    <td class="p-4 text-gray-400 text-xs">5 มิ.ย. 2569</td>
+                                    <td class="p-4 text-center">
+                                        <button onclick="alert('ดาวน์โหลดคู่มือจำลองเรียบร้อย')" class="text-brand-primary hover:underline"><i class="fa-solid fa-download"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold text-brand-accent">เอกสารสรุปความคืบหน้านโยบายเยาวชนกรงปินัง ครึ่งปีแรก</td>
+                                    <td class="p-4 text-gray-500 text-xs">📄 PDF</td>
+                                    <td class="p-4 text-gray-400 text-xs">1 มิ.ย. 2569</td>
+                                    <td class="p-4 text-center">
+                                        <button onclick="alert('ดาวน์โหลดรายงานจำลองเรียบร้อย')" class="text-brand-primary hover:underline"><i class="fa-solid fa-download"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 7. PAGE: APPLY ACTIVITY (สมัครกิจกรรม) ================= -->
+        <div id="page-apply-activity" class="page">
+            <div class="max-w-3xl mx-auto px-4 py-12">
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-lg">
+                    <div class="mb-6">
+                        <span class="text-xs font-semibold text-brand-primary bg-orange-100 px-3 py-1 rounded-full uppercase">Activity Registration</span>
+                        <h2 class="text-2xl font-bold text-brand-accent mt-2">กรอกฟอร์มสมัครเข้าร่วมกิจกรรมออนไลน์</h2>
+                        <p class="text-gray-500 text-xs sm:text-sm mt-1">กรุณากรอกข้อมูลส่วนบุคคลและระบุกิจกรรมที่ท่านมีความต้องการเข้าร่วมให้ครบถ้วน</p>
+                    </div>
+
+                    <form id="activityRegisterForm" onsubmit="handleActivityRegister(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">เลือกกิจกรรมที่สมัคร *</label>
+                                <select id="regEventTitle" required class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                                    <option value="ฝึกอบรมกู้ภัยเบื้องต้น 101">ฝึกอบรมกู้ภัยเบื้องต้น 101</option>
+                                    <option value="แนะแนวอาชีพและเวิร์กช็อปเยาวชน">แนะแนวอาชีพและเวิร์กช็อปเยาวชน</option>
+                                    <option value="ค่ายจิตอาสาพัฒนาสิ่งแวดล้อมกรงปินัง">ค่ายจิตอาสาพัฒนาสิ่งแวดล้อมกรงปินัง</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">ชื่อ-นามสกุล *</label>
+                                <input type="text" id="regFullName" required placeholder="นายกรงปินัง พลังบวก" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">เบอร์โทรศัพท์ติดต่อ *</label>
+                                <input type="tel" id="regPhone" required placeholder="081-234-5678" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">อีเมลผู้สมัคร *</label>
+                                <input type="email" id="regEmail" required placeholder="example@email.com" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">ที่อยู่ปัจจุบันตามทะเบียนบ้าน *</label>
+                            <input type="text" id="regAddress" required placeholder="ต.สะเอะ อ.กรงปินัง จ.ยะลา" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-primary">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">แนบไฟล์ประวัติ / สำเนาบัตรประชาชน (จำลองอัปเดตไฟล์ PDF) *</label>
+                            <input type="file" id="regDocument" required class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-brand-primary hover:file:bg-orange-100">
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-primary text-white hover:bg-orange-600 py-3 rounded-xl font-bold transition duration-200 shadow-md">
+                            ส่งใบสมัครเข้าร่วมกิจกรรม
+                        </button>
+                    </form>
+
+                    <!-- พื้นที่ตรวจสอบสถานะการสมัคร -->
+                    <div class="mt-8 pt-8 border-t border-gray-100">
+                        <h3 class="font-bold text-base text-brand-accent">🎯 ค้นหาและตรวจสอบสถานะการเข้าร่วม</h3>
+                        <div class="mt-3 flex gap-2">
+                            <input type="text" id="searchStatusInput" placeholder="กรอกชื่อผู้รับการลงทะเบียนหรือเบอร์โทร..." class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none">
+                            <button onclick="checkAppStatus()" class="bg-brand-accent text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-gray-800">ตรวจสอบ</button>
+                        </div>
+                        <div id="statusResultBox" class="mt-4 hidden p-4 bg-orange-50/50 border border-brand-primary/20 rounded-2xl text-xs">
+                            <!-- Dynamic check status -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 8. PAGE: GALLERY (คลังภาพกิจกรรม) ================= -->
+        <div id="page-gallery" class="page">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-brand-accent">คลังอัลบั้มภาพกิจกรรมย้อนหลัง</h2>
+                    <p class="text-gray-500 text-sm mt-1">ดาวน์โหลดภาพประทับใจของการจัดกิจกรรมในชุมชน</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <div class="h-44 bg-gray-200">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/9484322452800186554_0" alt="[รูปภาพคลังอัลบั้มการกู้ชีพ]" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-sm text-brand-accent">อัลบั้ม: โครงการซ้อมเผชิญภัยน้ำป่า ต.สะเอะ</h3>
+                            <p class="text-gray-400 text-xs mt-1">รูปภาพกิจกรรมจำนวน 45 รูป</p>
+                            <button onclick="alert('ดาวน์โหลดรูปภาพกิจกรรมทั้งอัลบั้มแบบ ZIP เรียบร้อยแล้ว')" class="mt-3 w-full bg-brand-primary/10 hover:bg-brand-primary hover:text-white text-brand-primary font-bold text-xs py-2 rounded-xl transition duration-150">
+                                <i class="fa-solid fa-cloud-arrow-down mr-1"></i> ดาวน์โหลดทั้งหมด
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <div class="h-44 bg-gray-200">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/5522618398499004583_0" alt="[รูปภาพการอบรมเชิงสร้างสรรค์]" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-sm text-brand-accent">อัลบั้ม: สรุปผลงานค่ายสร้างนวัตกรรมกรงปินัง</h3>
+                            <p class="text-gray-400 text-xs mt-1">รูปภาพกิจกรรมจำนวน 30 รูป</p>
+                            <button onclick="alert('ดาวน์โหลดรูปภาพกิจกรรมทั้งอัลบั้มแบบ ZIP เรียบร้อยแล้ว')" class="mt-3 w-full bg-brand-primary/10 hover:bg-brand-primary hover:text-white text-brand-primary font-bold text-xs py-2 rounded-xl transition duration-150">
+                                <i class="fa-solid fa-cloud-arrow-down mr-1"></i> ดาวน์โหลดทั้งหมด
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 9. PAGE: CONTACT (ติดต่อเรา) ================= -->
+        <div id="page-contact" class="page">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    <!-- Left Columns (5 Cols) Contact Info & Maps -->
+                    <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-3xl border border-gray-100 flex flex-col justify-between">
+                        <div class="space-y-6">
+                            <div>
+                                <h2 class="text-2xl font-bold text-brand-accent">ติดต่อเรา</h2>
+                                <p class="text-gray-500 text-xs mt-1">ศูนย์ประสานงานเยาวชนอำเภอกรงปินัง (NADI)</p>
+                            </div>
+
+                            <div class="space-y-3 text-sm text-gray-600">
+                                <p><i class="fa-solid fa-map-location-dot text-brand-primary mr-2"></i> 124 หมู่ที่ 4 ต.สะเอะ อ.กรงปินัง จ.ยะลา 95130</p>
+                                <p><i class="fa-solid fa-phone text-brand-primary mr-2"></i> 089-789-XXXX / 1669 (แจ้งเหตุฉุกเฉิน)</p>
+                                <p><i class="fa-solid fa-envelope text-brand-primary mr-2"></i> contact@nadi-kp.org</p>
+                                <p><i class="fa-brands fa-facebook text-brand-primary mr-2"></i> Facebook: ศปย.กรงปินัง - NADI Youth Center</p>
+                                <p><i class="fa-solid fa-comment-dots text-brand-primary mr-2"></i> Line Official: @nadi_kp_rescue</p>
+                            </div>
+                        </div>
+
+                        <!-- Google Maps Mock -->
+                        <div class="mt-6 rounded-2xl overflow-hidden h-44 bg-gray-100 relative border border-gray-100 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fa-solid fa-location-dot text-brand-primary text-3xl mb-1"></i>
+                                <p class="text-xs font-semibold">พิกัดทางภูมิศาสตร์กรงปินัง</p>
+                                <p class="text-[10px] text-gray-400 mt-1">Google Maps - พิกัด ต.สะเอะ ม.4</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Columns (7 Cols) Send Message Form -->
+                    <div class="lg:col-span-7 bg-brand-bg p-6 sm:p-8 rounded-3xl border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-lg text-brand-accent">ฟอร์มส่งข้อความติดต่อผู้ดูแลศูนย์</h3>
+                        <p class="text-gray-500 text-xs mt-1">ส่งคำถาม ข้อเสนอแนะ หรือคำขอเรื่องอื่น ๆ ผ่านฟอร์มติดต่อกลับ</p>
+                        
+                        <form onsubmit="handleContactMessage(event)" class="space-y-4 mt-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input type="text" id="contactName" required placeholder="ชื่อจริงของคุณ" class="px-4 py-2.5 text-sm rounded-xl border border-gray-300 w-full focus:outline-none">
+                                <input type="email" id="contactEmail" required placeholder="อีเมลแอดเดรส" class="px-4 py-2.5 text-sm rounded-xl border border-gray-300 w-full focus:outline-none">
+                            </div>
+                            <input type="text" id="contactSubject" required placeholder="เรื่องที่ต้องการติดต่อ" class="px-4 py-2.5 text-sm rounded-xl border border-gray-300 w-full focus:outline-none">
+                            <textarea id="contactMessage" required placeholder="พิมพ์ข้อความของคุณตรงนี้..." rows="4" class="px-4 py-2.5 text-sm rounded-xl border border-gray-300 w-full focus:outline-none"></textarea>
+                            
+                            <button type="submit" class="w-full bg-brand-primary text-white hover:bg-orange-600 py-3 rounded-xl font-bold transition duration-200">
+                                ส่งรายละเอียดข้อความติดต่อ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 10. PAGE: LOGIN (เข้าสู่ระบบ) ================= -->
+        <div id="page-login" class="page">
+            <div class="max-w-md mx-auto my-16 px-6 py-8 bg-white border border-gray-200 rounded-3xl shadow-lg">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto text-brand-primary text-xl mb-2">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-brand-accent">เข้าสู่ระบบ</h2>
+                    <p class="text-gray-400 text-xs mt-1">ผู้ใช้ทั่วไปและผู้ดูแลระบบศูนย์ประสานงาน NADI</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ชื่อบัญชีผู้ใช้งาน (หรืออีเมล)</label>
+                        <input type="text" id="loginUsername" required placeholder="ระบุ username ของท่าน" class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">รหัสผ่าน</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-primary text-white hover:bg-orange-600 py-3 rounded-xl font-bold transition duration-150">
+                        ยืนยันเข้าสู่ระบบ
+                    </button>
+                    <p class="text-[11px] text-gray-400 text-center mt-2">ทดสอบล็อกอิน: ชื่อใดก็ได้เป็นผู้ใช้ทั่วไป / ใส่ "admin" สำหรับผู้ดูแลหลังบ้าน</p>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= 11. PAGE: REGISTER (สมัครสมาชิก) ================= -->
+        <div id="page-register" class="page">
+            <div class="max-w-md mx-auto my-16 px-6 py-8 bg-white border border-gray-200 rounded-3xl shadow-lg">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto text-brand-primary text-xl mb-2">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-brand-accent">สมัครสมาชิกทั่วไป</h2>
+                    <p class="text-gray-400 text-xs mt-1">ร่วมเป็นหนึ่งในครอบครัวและติดตามกิจกรรมของศูนย์ NADI</p>
+                </div>
+
+                <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ชื่อ-นามสกุลจริง *</label>
+                        <input type="text" id="regName" required placeholder="นายกรงปินัง ปลอดภัย" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">กำหนดชื่อผู้ใช้งาน (Username) *</label>
+                        <input type="text" id="regUser" required placeholder="krongpinang_youth" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">เบอร์โทรศัพท์มือถือ *</label>
+                        <input type="tel" id="regPhoneNum" required placeholder="081-XXXX-XXX" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">กำหนดรหัสผ่าน (Password) *</label>
+                        <input type="password" id="regPass" required placeholder="••••••••" class="w-full px-4 py-2 text-sm rounded-xl border border-gray-300">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-primary text-white hover:bg-orange-600 py-3 rounded-xl font-bold transition duration-150">
+                        สร้างบัญชีสมาชิก
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= 12. PAGE: MEMBER PROFILE (โปรไฟล์ประวัติของสมาชิก) ================= -->
+        <div id="page-profile" class="page">
+            <div class="max-w-4xl mx-auto px-4 py-12">
+                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm mb-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <span class="bg-orange-100 text-brand-primary text-[10px] font-bold px-2 py-0.5 rounded">MEMBER PROFILE</span>
+                            <h2 class="text-2xl font-bold text-brand-accent mt-1" id="profileDisplayName">ข้อมูลสมาชิกทั่วไป</h2>
+                            <p class="text-xs text-gray-400">แก้ไขข้อมูลส่วนตัว เปลี่ยนรหัสผ่าน และติดตามความเคลื่อนไหว</p>
+                        </div>
+                        <button onclick="handleLogout()" class="bg-red-500 text-white px-4 py-2 rounded-xl text-xs font-semibold">ออกจากระบบ</button>
+                    </div>
+
+                    <!-- แก้ไขข้อมูลส่วนตัว & เปลี่ยนรหัสผ่าน -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 pt-8 border-t border-gray-100">
+                        <div>
+                            <h3 class="font-bold text-sm text-brand-accent mb-4"><i class="fa-solid fa-user-pen text-brand-primary"></i> แก้ไขข้อมูลส่วนตัว</h3>
+                            <form onsubmit="updateProfile(event)" class="space-y-3">
+                                <input type="text" id="editName" placeholder="ชื่อสกุล" required class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                                <input type="tel" id="editPhone" placeholder="เบอร์โทร" required class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                                <button type="submit" class="w-full bg-brand-accent text-white py-2 rounded-xl text-xs font-bold">อัปเดตข้อมูลของฉัน</button>
+                            </form>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-sm text-brand-accent mb-4"><i class="fa-solid fa-key text-brand-primary"></i> เปลี่ยนรหัสผ่าน</h3>
+                            <form onsubmit="changePassword(event)" class="space-y-3">
+                                <input type="password" id="newPass" placeholder="ระบุรหัสผ่านใหม่" required class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                                <button type="submit" class="w-full bg-brand-accent text-white py-2 rounded-xl text-xs font-bold">ยืนยันเปลี่ยนรหัสผ่าน</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ดูประวัติการสมัครเข้าร่วมกิจกรรม -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold text-base text-brand-accent mb-4">📜 ประวัติและตรวจสอบการลงทะเบียนสมัครกิจกรรมของฉัน</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="p-3">ชื่องานกิจกรรม</th>
+                                    <th class="p-3">วันที่จัดส่ง</th>
+                                    <th class="p-3">สถานะใบสมัคร</th>
+                                </tr>
+                            </thead>
+                            <tbody id="memberHistoryTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic user history -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 13. PAGE: BACKOFFICE (ระบบหลังบ้านผู้ดูแลระบบ) ================= -->
+        <div id="page-backoffice" class="page">
+            <div class="bg-brand-accent text-white py-6 shadow-md">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="bg-brand-primary text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">ADMIN AUTHORIZED</span>
+                        <h2 class="text-2xl font-extrabold mt-1.5 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-brand-primary"></i> ระบบจัดการควบคุมแผงหลังบ้าน (Admin Panel)</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="navigateTo('home')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-house"></i> หน้าหลัก</button>
+                        <button onclick="handleLogout()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-power-off"></i> ออกจากระบบ</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard สถิติเชิงรวบรวม -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+                <div>
+                    <h3 class="text-lg font-bold text-brand-accent mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-line text-brand-primary"></i> สถิติและสรุปสภาวะปัจจุบัน</h3>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm text-center">
+                            <p class="text-xs text-gray-400 font-bold uppercase">จำนวนสมาชิกทั้งหมด</p>
+                            <h4 id="adminStatMembers" class="text-3xl font-extrabold text-brand-primary mt-1">1,240</h4>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm text-center">
+                            <p class="text-xs text-gray-400 font-bold uppercase">จำนวนกิจกรรมชุมชน</p>
+                            <h4 id="adminStatEvents" class="text-3xl font-extrabold text-brand-accent mt-1">48</h4>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm text-center">
+                            <p class="text-xs text-gray-400 font-bold uppercase">จำนวนข่าวประชาสัมพันธ์</p>
+                            <h4 id="adminStatNews" class="text-3xl font-extrabold text-brand-accent mt-1">112</h4>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm text-center">
+                            <p class="text-xs text-gray-400 font-bold uppercase">จำนวนผู้สมัครกิจกรรม</p>
+                            <h4 id="adminStatApplicants" class="text-3xl font-extrabold text-emerald-600 mt-1">320</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- แดชบอร์ดความปลอดภัยระบบ (Security Settings) -->
+                <div class="bg-zinc-800 text-gray-300 p-6 rounded-3xl shadow-lg">
+                    <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-virus text-emerald-500 animate-pulse"></i> 🛡️ แผงจำลองระบบความปลอดภัยระดับสากล (Security Dashboard)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs mt-4">
+                        <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-700">
+                            <p class="font-bold text-white"><i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> JWT Authentication</p>
+                            <p class="text-[10px] text-gray-400 mt-1">Token-based verification และ Session Protection ป้องกันการสวมรอยสิทธิ์</p>
+                        </div>
+                        <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-700">
+                            <p class="font-bold text-white"><i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> Hashing & Protection</p>
+                            <p class="text-[10px] text-gray-400 mt-1">ใช้โครงสร้างจำลอง Password Hashing (bcrypt), SQL Injection และ XSS Protection</p>
+                        </div>
+                        <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-700">
+                            <p class="font-bold text-white"><i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> CSRF Defense</p>
+                            <p class="text-[10px] text-gray-400 mt-1">ป้องกันการปลอมแปลงคำร้องขอ และตรวจสอบสิทธิ์แบบ Role Based Access Control</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. จัดการสมาชิก (ระงับ อนุมัติ) -->
+                <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
+                    <h3 class="font-bold text-base text-brand-accent mb-4"><i class="fa-solid fa-users text-brand-primary"></i> จัดการฐานข้อมูลและระดับสิทธิ์สมาชิก</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-200">
+                                    <th class="p-3">ชื่อสมาชิก</th>
+                                    <th class="p-3">Username</th>
+                                    <th class="p-3">เบอร์ติดต่อ</th>
+                                    <th class="p-3">สถานะบัญชี</th>
+                                    <th class="p-3 text-center">จัดการสถานะ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminMembersTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic render members -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2. จัดการข่าวสาร (เพิ่ม แก้ไข ลบ ปักหมุด) -->
+                <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-base text-brand-accent"><i class="fa-solid fa-newspaper text-brand-primary"></i> บรรณาธิการจัดการเนื้อหาข่าวสาร</h3>
+                        <button onclick="openNewsModal()" class="bg-brand-primary text-white text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-orange-600"><i class="fa-solid fa-plus mr-1"></i> เพิ่มข่าว</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="p-3">หัวข้อข่าวประชาสัมพันธ์</th>
+                                    <th class="p-3">หมวดหมู่</th>
+                                    <th class="p-3">สถานะปักหมุด</th>
+                                    <th class="p-3 text-center">จัดการข่าว</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminNewsTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic render news -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3. จัดการกิจกรรม (เพิ่ม ปิดรับสมัคร ดูรายชื่อผู้สมัคร) -->
+                <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-base text-brand-accent"><i class="fa-solid fa-calendar-check text-brand-primary"></i> จัดการกิจกรรมและการรับสมัครเยาวชน</h3>
+                        <button onclick="openEventModal()" class="bg-brand-primary text-white text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-orange-600"><i class="fa-solid fa-plus mr-1"></i> เพิ่มกิจกรรม</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="p-3">ชื่องานกิจกรรม</th>
+                                    <th class="p-3">วันที่จัดกิจกรรม</th>
+                                    <th class="p-3">ยอดรับ / ยอดสมัคร</th>
+                                    <th class="p-3">สถานะรับสมัคร</th>
+                                    <th class="p-3 text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminEventsTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic events backoffice -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. จัดการไฟล์ / อัปโหลด PDF และรูปภาพ -->
+                <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
+                    <h3 class="font-bold text-base text-brand-accent mb-4"><i class="fa-solid fa-folder-open text-brand-primary"></i> คลังจัดการอัปโหลดไฟล์ (PDF & Images)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 p-4 rounded-2xl bg-gray-50">
+                            <h4 class="font-bold text-xs text-gray-500 uppercase">อัปโหลดไฟล์ PDF ใหม่</h4>
+                            <div class="mt-2 flex gap-2">
+                                <input type="file" id="adminUploadPdf" class="text-xs w-full">
+                                <button onclick="uploadMockFile('pdf')" class="bg-brand-accent text-white px-4 py-1.5 rounded-lg text-xs font-semibold">อัปโหลด</button>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 p-4 rounded-2xl bg-gray-50">
+                            <h4 class="font-bold text-xs text-gray-500 uppercase">อัปโหลดรูปภาพกิจกรรมใหม่</h4>
+                            <div class="mt-2 flex gap-2">
+                                <input type="file" id="adminUploadImg" class="text-xs w-full">
+                                <button onclick="uploadMockFile('image')" class="bg-brand-primary text-white px-4 py-1.5 rounded-lg text-xs font-semibold">อัปโหลด</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="font-bold text-xs text-brand-accent mb-2">ประวัติและคลังไฟล์ที่มีความเคลื่อนไหวล่าสุดในระบบหลังบ้าน:</h4>
+                        <div id="adminFilesList" class="space-y-2 text-xs">
+                            <!-- Dynamic files list -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. จัดการรายการคำขอช่วยเหลือ / ประสานงานเหตุความปลอดภัย -->
+                <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
+                    <h3 class="font-bold text-base text-brand-accent mb-3"><i class="fa-solid fa-kit-medical text-brand-primary"></i> รายงานสถานการณ์และแจ้งเหตุผ่านหน้าหลัก</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="p-3">รหัสงาน</th>
+                                    <th class="p-3">ผู้แจ้ง / ติดต่อ</th>
+                                    <th class="p-3">รายละเอียดความช่วยเหลือ</th>
+                                    <th class="p-3">สถานที่พิกัด</th>
+                                    <th class="p-3">สถานะภัยพิบัติ</th>
+                                    <th class="p-3 text-center">จัดการสถานะ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminIncidentsTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic incident control -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ================= MODALS SECTION ================= -->
+    <!-- 1. Add News Modal -->
+    <div id="news-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-3xl max-w-md w-full mx-4 shadow-2xl">
+            <h3 class="font-bold text-lg mb-4 text-brand-accent">เพิ่มข่าวประชาสัมพันธ์ชิ้นใหม่</h3>
+            <form onsubmit="addNewsItem(event)" class="space-y-3">
+                <input type="text" id="newsFormTitle" required placeholder="หัวข้อข่าวสาร" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                <textarea id="newsFormContent" required placeholder="อธิบายเนื้อหาและรายละเอียดของข่าว..." rows="3" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300"></textarea>
+                <select id="newsFormCat" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                    <option value="กู้ภัยชุมชน">🚨 กู้ภัยชุมชน</option>
+                    <option value="อบรมคนรุ่นใหม่">🌟 อบรมคนรุ่นใหม่</option>
+                    <option value="บริการสังคม">🏫 บริการสังคม</option>
+                </select>
+                <div class="flex items-center gap-2 text-xs">
+                    <input type="checkbox" id="newsFormPinned">
+                    <label for="newsFormPinned">ต้องการปักหมุดข่าวชิ้นนี้ให้อยู่บนสุด</label>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeNewsModal()" class="bg-gray-100 text-gray-500 px-4 py-2 rounded-xl text-xs font-bold">ยกเลิก</button>
+                    <button type="submit" class="bg-brand-primary text-white px-4 py-2 rounded-xl text-xs font-bold">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Add Event Modal -->
+    <div id="event-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-3xl max-w-md w-full mx-4 shadow-2xl">
+            <h3 class="font-bold text-lg mb-4 text-brand-accent">สร้างและลงทะเบียนกิจกรรมใหม่</h3>
+            <form onsubmit="addEventItem(event)" class="space-y-3">
+                <input type="text" id="eventFormTitle" required placeholder="ชื่องานกิจกรรมเยาวชน" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                <textarea id="eventFormDetail" required placeholder="รายละเอียดของกิจกรรม..." rows="3" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300"></textarea>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="eventFormDate" required placeholder="วันที่จัดกิจกรรม" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                    <input type="text" id="eventFormLoc" required placeholder="สถานที่จัดโครงการ" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                </div>
+                <input type="number" id="eventFormMax" required placeholder="จำนวนสิทธิ์รับสมัคร (คน)" class="w-full px-4 py-2 text-xs rounded-xl border border-gray-300">
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeEventModal()" class="bg-gray-100 text-gray-500 px-4 py-2 rounded-xl text-xs font-bold">ยกเลิก</button>
+                    <button type="submit" class="bg-brand-primary text-white px-4 py-2 rounded-xl text-xs font-bold">บันทึกกิจกรรม</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-brand-accent text-white border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <div>
+                    <p class="font-bold text-lg">Youth Community Center (NADI)</p>
+                    <p class="text-sm text-gray-400 mt-1">Center Penyelarasanpemuda-pemudiD.krongpinang</p>
+                    <p class="text-[11px] text-gray-500 mt-1">© 2026 NADI Krongpinang. จัดทำระบบด้วยความปลอดภัย มุ่งมั่นพัฒนาเครือข่ายเยาวชน</p>
+                </div>
+                <div class="flex gap-4 text-sm text-gray-400 justify-center">
+                    <a href="#" onclick="alert('นโยบายความเป็นส่วนตัว')" class="hover:text-brand-primary transition duration-150">นโยบายความเป็นส่วนตัว</a>
+                    <span>•</span>
+                    <a href="#" onclick="alert('ติดต่อสายด่วนโทร 089-789-XXXX')" class="hover:text-brand-primary transition duration-150">ติดต่อทีมงาน</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT SYSTEM LOGIC ================= -->
+    <script>
+        // --- 1. INITIAL BASE DATA STATE ---
+        const DEFAULT_INCIDENTS = [
+            { id: "KP-001", reporter: "ฮาฟิซ แวหะมะ", phone: "089-789-xxxx", category: "อุทกภัย / น้ำท่วม", location: "ต.สะเอะ ม.3", detail: "กระแสน้ำป่าไหลเข้าล้อมบ้านพัก มีคุณตาผู้สูงอายุด้านในต้องการคนพายเรืออพยพออก", date: "8 มิ.ย. 2569", status: "รอดำเนินการ" },
+            { id: "KP-002", reporter: "มารียะ มะดอเลาะ", phone: "082-123-xxxx", category: "ช่วยเหลือผู้ประสบภัย", location: "ต.ห้วยกระทิง ตรงข้ามโรงเรียนกรงปินัง", detail: "ต้องการเต็นท์เพื่อจัดวางจุดปฐมพยาบาลเบื้องต้นชั่วคราวแก่ทีมเยาวชน", date: "8 มิ.ย. 2569", status: "กำลังดำเนินการ" }
+        ];
+
+        const DEFAULT_NEWS = [
+            { id: 1, title: "สรุปสถานการณ์น้ำท่วมกรงปินังปีที่ผ่านมา", content: "ทีมอาสา NADI ได้ลงพื้นที่แจกจ่ายถุงยังชีพและช่วยเคลื่อนย้ายผู้ป่วยติดเตียงพ้นวิกฤตน้ำท่วมฉับพลัน ขอบคุณสปอนเซอร์ทุกท่านที่คอยสนับสนุน", category: "กู้ภัยชุมชน", date: "8 มิ.ย. 2569", pinned: true },
+            { id: 2, title: "เปิดรับสมัครเยาวชนเรียนรู้ปฐมพยาบาลเบื้องต้น", content: "ร่วมเสริมสร้างทักษะการทำ CPR และการปฐมพยาบาลฉุกเฉิน เรียนจบพร้อมออกปฏิบัติการจริงเคียงข้างทีมกู้ชีพกรงปินัง", category: "อบรมคนรุ่นใหม่", date: "5 มิ.ย. 2569", pinned: false },
+            { id: 3, title: "เปิดจุดบริการตรวจเช็คสภาพความพร้อมอุบัติเหตุเทศกาล", content: "ร่วมมือกับฝ่ายปกครองอำเภอกรงปินัง เปิดจุดเช็คความปลอดภัย เพื่อลดความเสี่ยงและความรวดเร็วในการประสานงานเมื่อมีเคสฉุกเฉิน", category: "บริการสังคม", date: "1 มิ.ย. 2569", pinned: false }
+        ];
+
+        const DEFAULT_EVENTS = [
+            { id: "EV-101", title: "ค่ายฝึกอบรมกู้ภัยเบื้องต้น 101", detail: "เรียนรู้วิธีการทำงานกู้ชีพ การประสานงานเครือข่ายวิทยุสื่อสารและพยาบาลสนาม", date: "12-14 มิ.ย. 2569", location: "หอประชุมสะเอะ", maxSeats: 50, applied: 32, status: "เปิดรับสมัคร" },
+            { id: "EV-102", title: "แนะแนวอาชีพและเวิร์กช็อปเยาวชน", detail: "แนะแนวอาชีพ เวิร์กช็อปนวัตกรรมและเทคโนโลยีให้กับเยาวชนในสถาบันการศึกษาเพื่อก้าวสู่วิถีอนาคต", date: "20 มิ.ย. 2569", location: "หอประชุมที่ว่าการอำเภอ", maxSeats: 100, applied: 48, status: "เปิดรับสมัคร" }
+        ];
+
+        const DEFAULT_MEMBERS = [
+            { id: "M-1", name: "นายซูเบร ปาโต๊ะ", user: "suber123", phone: "081-345-XXXX", status: "อนุมัติแล้ว" },
+            { id: "M-2", name: "นางสาวนูรี ลาเต๊ะ", user: "nuree456", phone: "082-987-XXXX", status: "อนุมัติแล้ว" }
+        ];
+
+        const DEFAULT_APPLICANTS = [
+            { id: "AP-101", eventTitle: "ค่ายฝึกอบรมกู้ภัยเบื้องต้น 101", fullName: "นายฮาฟิซ แวหะมะ", phone: "089-789-XXXX", email: "hafiz@email.com", status: "อนุมัติสิทธิ์สำเร็จ" }
+        ];
+
+        const DEFAULT_FILES = [
+            { name: "สมัครกู้ภัยอาสา_NADI.pdf", type: "PDF Document", size: "1.2 MB", date: "8 มิ.ย. 2569" },
+            { name: "First_Aid_Manual.pdf", type: "PDF Document", size: "4.5 MB", date: "5 มิ.ย. 2569" }
+        ];
+
+        // LOCAL STORAGE STORAGE INITIALIZATION
+        let incidents = JSON.parse(localStorage.getItem('nadi_incidents')) || DEFAULT_INCIDENTS;
+        let news = JSON.parse(localStorage.getItem('nadi_news')) || DEFAULT_NEWS;
+        let events = JSON.parse(localStorage.getItem('nadi_events')) || DEFAULT_EVENTS;
+        let members = JSON.parse(localStorage.getItem('nadi_members')) || DEFAULT_MEMBERS;
+        let applicants = JSON.parse(localStorage.getItem('nadi_applicants')) || DEFAULT_APPLICANTS;
+        let filesList = JSON.parse(localStorage.getItem('nadi_files')) || DEFAULT_FILES;
+
+        // Current user session simulation
+        let currentUser = JSON.parse(sessionStorage.getItem('nadi_session')) || null;
+
+        // --- 2. NAVIGATION SYSTEMS ---
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(l => {
+                if (l.getAttribute('data-page') === pageId) {
+                    l.classList.remove('text-gray-300');
+                    l.classList.add('text-white', 'font-medium');
+                } else {
+                    l.classList.remove('text-white', 'font-medium');
+                    l.classList.add('text-gray-300');
+                }
+            });
+
+            // Sync rendering with current pages and stats
+            renderData();
+            updateAuthMenus();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                menu.classList.add('hidden');
+                icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
+        }
+
+        // Top notification banner automation
+        function showTopNotification(msg) {
+            const banner = document.getElementById('top-notification');
+            const txt = document.getElementById('notification-text');
+            txt.innerText = msg;
+            banner.classList.remove('hidden');
+            setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 8000);
+        }
+
+        function closeNotification() {
+            document.getElementById('top-notification').classList.add('hidden');
+        }
+
+        // --- 3. AUTHENTICATION & MEMBERSHIP LOGIC ---
+        function updateAuthMenus() {
+            const desktopArea = document.getElementById('nav-auth-area');
+            const mobileArea = document.getElementById('nav-auth-area-mobile');
+
+            if (currentUser) {
+                const logoutBtnHtml = `
+                    <button onclick="navigateTo('profile')" class="text-xs text-orange-200 border border-brand-primary px-3 py-1.5 rounded-xl hover:bg-orange-500/10 transition-all">
+                        <i class="fa-solid fa-user"></i> ${currentUser.name}
+                    </button>
+                    ${currentUser.role === 'admin' ? `
+                    <button onclick="navigateTo('backoffice')" class="text-xs bg-brand-primary text-white px-3 py-1.5 rounded-xl hover:bg-orange-600 transition-all font-semibold">
+                        <i class="fa-solid fa-shield-halved"></i> ระบบหลังบ้าน
+                    </button>
+                    ` : ''}
+                    <button onclick="handleLogout()" class="text-xs text-gray-400 hover:text-white"><i class="fa-solid fa-power-off"></i></button>
+                `;
+                desktopArea.innerHTML = logoutBtnHtml;
+
+                mobileArea.innerHTML = `
+                    <button onclick="navigateTo('profile'); toggleMobileMenu()" class="block w-full text-center bg-gray-800 text-orange-300 py-2 rounded-xl text-sm border border-gray-700">ประวัติสมาชิก (${currentUser.name})</button>
+                    ${currentUser.role === 'admin' ? `<button onclick="navigateTo('backoffice'); toggleMobileMenu()" class="block w-full text-center bg-brand-primary text-white py-2 rounded-xl text-sm font-semibold">ระบบควบคุมหลังบ้าน</button>` : ''}
+                    <button onclick="handleLogout(); toggleMobileMenu()" class="block w-full text-center bg-red-600 text-white py-2 rounded-xl text-sm font-semibold">ออกจากระบบ</button>
+                `;
+            } else {
+                desktopArea.innerHTML = `
+                    <button onclick="navigateTo('login')" class="text-xs text-white border border-gray-600 px-3 py-1.5 rounded-xl hover:bg-gray-700 hover:text-brand-primary transition-all duration-200">เข้าสู่ระบบ</button>
+                    <button onclick="navigateTo('register')" class="text-xs bg-brand-primary text-white px-3 py-1.5 rounded-xl hover:bg-orange-600 transition-all duration-200 shadow-sm">สมัครสมาชิก</button>
+                `;
+                mobileArea.innerHTML = `
+                    <button onclick="navigateTo('login'); toggleMobileMenu()" class="block w-full text-center bg-gray-800 text-white py-2 rounded-xl text-sm border border-gray-700">เข้าสู่ระบบ</button>
+                    <button onclick="navigateTo('register'); toggleMobileMenu()" class="block w-full text-center bg-brand-primary text-white py-2 rounded-xl text-sm font-semibold">สมัครสมาชิก</button>
+                `;
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const user = document.getElementById('regUser').value;
+            const phone = document.getElementById('regPhoneNum').value;
+            const pass = document.getElementById('regPass').value;
+
+            // Password Hashing (จำลองเข้ารหัสแบบ Bcrypt ด้านความปลอดภัย)
+            const simulatedHash = btoa(pass); // Base64 encoding mock for simulation
+
+            const newMember = {
+                id: `M-${members.length + 1}`,
+                name: name,
+                user: user,
+                phone: phone,
+                passHash: simulatedHash,
+                status: "รอการอนุมัติ"
+            };
+
+            members.push(newMember);
+            localStorage.setItem('nadi_members', JSON.stringify(members));
+
+            showTopNotification("🔒 สมัครสมาชิกเสร็จสิ้น! บัญชีของคุณอยู่ระหว่างรอผู้ดูแลระบบ NADI อนุมัติสิทธิ์การเข้าถึง");
+            document.getElementById('registerForm').reset();
+            navigateTo('login');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const userVal = document.getElementById('loginUsername').value;
+            const passVal = document.getElementById('loginPassword').value;
+
+            if (userVal.toLowerCase() === 'admin') {
+                currentUser = { name: "แอดมินฝ่ายประสานงาน", user: "admin", role: "admin" };
+                sessionStorage.setItem('nadi_session', JSON.stringify(currentUser));
+                showTopNotification("🔒 เข้าสู่ระบบในสถานะ ผู้ดูแลระบบ (Admin) สำเร็จ!");
+                navigateTo('backoffice');
+                return;
+            }
+
+            // ค้นหาสมาชิกในระบบ
+            const found = members.find(m => m.user === userVal);
+            if (found) {
+                if (found.status !== "อนุมัติแล้ว") {
+                    alert("⚠️ บัญชีสมาชิกนี้ยังไม่ได้รับอนุมัติสิทธิ์เข้าใช้งานจากระบบแผงหลังบ้าน กรุณาติดต่อประธานศูนย์");
+                    return;
+                }
+                currentUser = { name: found.name, user: found.user, role: "member", phone: found.phone };
+                sessionStorage.setItem('nadi_session', JSON.stringify(currentUser));
+                showTopNotification("🔑 ยินดีต้อนรับสมาชิกกรงปินัง เข้าสู่ระบบสำเร็จ!");
+                navigateTo('profile');
+            } else {
+                alert("❌ ไม่พบชื่อผู้ใช้งานนี้ในระบบสมาชิกของศูนย์");
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            sessionStorage.removeItem('nadi_session');
+            showTopNotification("🚪 ออกจากระบบเรียบร้อยแล้ว");
+            navigateTo('home');
+        }
+
+        function updateProfile(e) {
+            e.preventDefault();
+            const editNameVal = document.getElementById('editName').value;
+            const editPhoneVal = document.getElementById('editPhone').value;
+
+            members = members.map(m => {
+                if (m.user === currentUser.user) {
+                    return { ...m, name: editNameVal, phone: editPhoneVal };
+                }
+                return m;
+            });
+            localStorage.setItem('nadi_members', JSON.stringify(members));
+            
+            currentUser.name = editNameVal;
+            currentUser.phone = editPhoneVal;
+            sessionStorage.setItem('nadi_session', JSON.stringify(currentUser));
+
+            alert("✅ บันทึกข้อมูลประวัติผู้ใช้งานสำเร็จ");
+            renderData();
+        }
+
+        function changePassword(e) {
+            e.preventDefault();
+            const newP = document.getElementById('newPass').value;
+            const newHash = btoa(newP);
+
+            members = members.map(m => {
+                if (m.user === currentUser.user) {
+                    return { ...m, passHash: newHash };
+                }
+                return m;
+            });
+            localStorage.setItem('nadi_members', JSON.stringify(members));
+            alert("🔑 เปลี่ยนแปลงรหัสผ่านของท่านอย่างปลอดภัยสำเร็จแล้ว");
+            document.getElementById('newPass').value = '';
+        }
+
+        // --- 4. INCIDENTS (ระบบแจ้งเหตุ) ---
+        function handleHomeIncident(e) {
+            e.preventDefault();
+            const name = document.getElementById('homeIncName').value;
+            const phone = document.getElementById('homeIncPhone').value;
+            const cat = document.getElementById('homeIncCat').value;
+            const loc = document.getElementById('homeIncLoc').value;
+            const detail = document.getElementById('homeIncDetail').value;
+
+            const newIncident = {
+                id: `KP-${Math.floor(100 + Math.random() * 900)}`,
+                reporter: name,
+                phone: phone,
+                category: cat,
+                location: loc,
+                detail: detail,
+                date: "8 มิ.ย. 2569",
+                status: "รอดำเนินการ"
+            };
+
+            incidents.unshift(newIncident);
+            localStorage.setItem('nadi_incidents', JSON.stringify(incidents));
+
+            showTopNotification(`🌊 ได้รับคำสั่งแจ้งเหตุช่วยกู้ชีพ ${newIncident.id} เรียบร้อยแล้ว!`);
+            document.getElementById('homeIncidentForm').reset();
+            renderData();
+        }
+
+        function changeIncidentStatus(id, newS) {
+            incidents = incidents.map(i => {
+                if (i.id === id) {
+                    return { ...i, status: newS };
+                }
+                return i;
+            });
+            localStorage.setItem('nadi_incidents', JSON.stringify(incidents));
+            renderData();
+        }
+
+        function deleteIncident(id) {
+            if (confirm("ต้องการลบประวัติคำร้องขอนี้ออกจากฐานข้อมูลภัยพิบัติ?")) {
+                incidents = incidents.filter(i => i.id !== id);
+                localStorage.setItem('nadi_incidents', JSON.stringify(incidents));
+                renderData();
+            }
+        }
+
+        // --- 5. ACTIVITY REGISTER (สมัครกิจกรรม) ---
+        function handleActivityRegister(e) {
+            e.preventDefault();
+            const eventTitle = document.getElementById('regEventTitle').value;
+            const fullName = document.getElementById('regFullName').value;
+            const phone = document.getElementById('regPhone').value;
+            const email = document.getElementById('regEmail').value;
+
+            const newApp = {
+                id: `AP-${Math.floor(100 + Math.random() * 900)}`,
+                eventTitle: eventTitle,
+                fullName: fullName,
+                phone: phone,
+                email: email,
+                status: "รออนุมัติใบสมัคร"
+            };
+
+            applicants.unshift(newApp);
+            localStorage.setItem('nadi_applicants', JSON.stringify(applicants));
+
+            // บวกผู้สมัครไปในกิจกรรมจำลองสิทธิ์
+            events = events.map(ev => {
+                if (ev.title === eventTitle) {
+                    return { ...ev, applied: Math.min(ev.maxSeats, ev.applied + 1) };
+                }
+                return ev;
+            });
+            localStorage.setItem('nadi_events', JSON.stringify(events));
+
+            showTopNotification(`⭐ ส่งข้อมูลขอรับสมัครเข้าร่วมโครงการ ${newApp.id} สำเร็จ!`);
+            document.getElementById('activityRegisterForm').reset();
+            renderData();
+        }
+
+        function checkAppStatus() {
+            const val = document.getElementById('searchStatusInput').value.trim();
+            const box = document.getElementById('statusResultBox');
+            if (!val) {
+                box.classList.add('hidden');
+                return;
+            }
+
+            const found = applicants.filter(a => a.fullName.includes(val) || a.phone.includes(val));
+            if (found.length > 0) {
+                box.classList.remove('hidden');
+                box.innerHTML = `<h4 class="font-bold border-b pb-2 mb-2">ผลลัพธ์พบเอกสารสมัคร:</h4>`;
+                found.forEach(a => {
+                    box.innerHTML += `
+                        <div class="mb-2 p-2 border bg-white rounded-xl">
+                            <p><strong>กิจกรรม:</strong> ${a.eventTitle}</p>
+                            <p><strong>ผู้สมัคร:</strong> ${a.fullName}</p>
+                            <p><strong>สถานะความปลอดภัย:</strong> <span class="text-brand-primary font-bold">${a.status}</span></p>
+                        </div>
+                    `;
+                });
+            } else {
+                box.classList.remove('hidden');
+                box.innerHTML = `<p class="text-red-500">❌ ไม่พบประวัติผู้สมัครจากค่าค้นหาดังกล่าว</p>`;
+            }
+        }
+
+        // --- 6. ADMIN CONTROL CENTER (แผงหลังบ้าน) ---
+        function changeMemberStatus(id, newS) {
+            members = members.map(m => {
+                if (m.id === id) {
+                    return { ...m, status: newS };
+                }
+                return m;
+            });
+            localStorage.setItem('nadi_members', JSON.stringify(members));
+            renderData();
+        }
+
+        // จัดการเอกสารดาวน์โหลดจำลอง
+        function uploadMockFile(type) {
+            const fileInput = type === 'pdf' ? document.getElementById('adminUploadPdf') : document.getElementById('adminUploadImg');
+            if (fileInput.files.length === 0) {
+                alert("กรุณาเลือกไฟล์ที่จะทำตัวอย่างการอัปโหลดก่อน");
+                return;
+            }
+            const name = fileInput.files[0].name;
+            const newF = {
+                name: name,
+                type: type === 'pdf' ? "PDF Document" : "JPEG Image",
+                size: "2.4 MB",
+                date: "8 มิ.ย. 2569"
+            };
+            filesList.unshift(newF);
+            localStorage.setItem('nadi_files', JSON.stringify(filesList));
+            fileInput.value = '';
+            showTopNotification(`📂 อัปโหลดไฟล์เสร็จสิ้นอย่างโปร่งใส ป้องกันมัลแวร์และแรนซัมแวร์`);
+            renderData();
+        }
+
+        function deleteFile(name) {
+            if (confirm("ต้องการนำไฟล์นี้ออกจากรายการส่วนกลาง?")) {
+                filesList = filesList.filter(f => f.name !== name);
+                localStorage.setItem('nadi_files', JSON.stringify(filesList));
+                renderData();
+            }
+        }
+
+        // --- 7. NEWS EDITOR MODAL CONTROL ---
+        function openNewsModal() { document.getElementById('news-modal').classList.remove('hidden'); }
+        function closeNewsModal() { document.getElementById('news-modal').classList.add('hidden'); }
+        
+        function addNewsItem(e) {
+            e.preventDefault();
+            const title = document.getElementById('newsFormTitle').value;
+            const content = document.getElementById('newsFormContent').value;
+            const cat = document.getElementById('newsFormCat').value;
+            const pinned = document.getElementById('newsFormPinned').checked;
+
+            const newItem = {
+                id: news.length + 1,
+                title: title,
+                content: content,
+                category: cat,
+                date: "8 มิ.ย. 2569",
+                pinned: pinned
+            };
+
+            if (pinned) {
+                news.unshift(newItem);
+            } else {
+                news.push(newItem);
+            }
+            localStorage.setItem('nadi_news', JSON.stringify(news));
+            closeNewsModal();
+            document.getElementById('newsFormTitle').value = '';
+            document.getElementById('newsFormContent').value = '';
+            showTopNotification("📢 บันทึกข่าวสารชิ้นใหม่ของท่านสำเร็จแล้ว!");
+            renderData();
+        }
+
+        function toggleNewsPin(id) {
+            news = news.map(n => {
+                if (n.id === id) {
+                    return { ...n, pinned: !n.pinned };
+                }
+                return n;
+            });
+            localStorage.setItem('nadi_news', JSON.stringify(news));
+            renderData();
+        }
+
+        function deleteNewsItem(id) {
+            if (confirm("ต้องการลบเนื้อหาข่าวชิ้นนี้อย่างถาวร?")) {
+                news = news.filter(n => n.id !== id);
+                localStorage.setItem('nadi_news', JSON.stringify(news));
+                renderData();
+            }
+        }
+
+        // --- 8. EVENTS EDITOR MODAL CONTROL ---
+        function openEventModal() { document.getElementById('event-modal').classList.remove('hidden'); }
+        function closeEventModal() { document.getElementById('event-modal').classList.add('hidden'); }
+
+        function addEventItem(e) {
+            e.preventDefault();
+            const title = document.getElementById('eventFormTitle').value;
+            const detail = document.getElementById('eventFormDetail').value;
+            const date = document.getElementById('eventFormDate').value;
+            const loc = document.getElementById('eventFormLoc').value;
+            const maxS = parseInt(document.getElementById('eventFormMax').value);
+
+            const newEv = {
+                id: `EV-${Math.floor(100 + Math.random() * 900)}`,
+                title: title,
+                detail: detail,
+                date: date,
+                location: loc,
+                maxSeats: maxS,
+                applied: 0,
+                status: "เปิดรับสมัคร"
+            };
+
+            events.unshift(newEv);
+            localStorage.setItem('nadi_events', JSON.stringify(events));
+            closeEventModal();
+            document.getElementById('eventFormTitle').value = '';
+            document.getElementById('eventFormDetail').value = '';
+            showTopNotification("⭐ อัปเกรดฐานข้อมูลและกิจกรรมใหม่สมบูรณ์!");
+            renderData();
+        }
+
+        function toggleEventStatus(id) {
+            events = events.map(ev => {
+                if (ev.id === id) {
+                    const nextS = ev.status === "เปิดรับสมัคร" ? "ปิดรับสมัคร" : "เปิดรับสมัคร";
+                    return { ...ev, status: nextS };
+                }
+                return ev;
+            });
+            localStorage.setItem('nadi_events', JSON.stringify(events));
+            renderData();
+        }
+
+        function deleteEventItem(id) {
+            if (confirm("ต้องการถอนโครงการกิจกรรมนี้ออก?")) {
+                events = events.filter(ev => ev.id !== id);
+                localStorage.setItem('nadi_events', JSON.stringify(events));
+                renderData();
+            }
+        }
+
+        // Contact ฟอร์มหลังบ้านจำลอง
+        function handleContactMessage(e) {
+            e.preventDefault();
+            alert("✉️ ส่งข้อมูลข้อความติดต่อกลับไปยังผู้ดูแลระบบ NADI สำเร็จแล้ว! เราจะตอบกลับทางอีเมล");
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactSubject').value = '';
+            document.getElementById('contactMessage').value = '';
+        }
+
+        // --- 9. NEWS SEARCH FILTERING ---
+        function filterNews() {
+            const query = document.getElementById('newsSearchInput').value.toLowerCase();
+            const cat = document.getElementById('newsCategoryFilter').value;
+            
+            const filtered = news.filter(item => {
+                const matchQ = item.title.toLowerCase().includes(query) || item.content.toLowerCase().includes(query);
+                const matchC = cat === "ทั้งหมด" || item.category === cat;
+                return matchQ && matchC;
+            });
+
+            renderNewsContainer(filtered, 'allNewsContainer');
+        }
+
+        // --- 10. ALL PAGE INTERACTIVE RENDERING ---
+        function renderNewsContainer(list, containerId) {
+            const cont = document.getElementById(containerId);
+            if (!cont) return;
+
+            cont.innerHTML = '';
+            if (list.length === 0) {
+                cont.innerHTML = `<div class="col-span-full py-8 text-center text-gray-400">❌ ไม่พบรายการข่าวประชาสัมพันธ์ที่ตรงกับเงื่อนไขการระบุค้นหา</div>`;
+                return;
+            }
+
+            list.forEach(item => {
+                cont.innerHTML += `
+                    <div class="bg-white rounded-2xl border-2 ${item.pinned ? 'border-brand-primary' : 'border-brand-primary/10'} hover:border-brand-primary overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group">
+                        <div class="h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-semibold relative">
+                            
+                            ${item.pinned ? '<span class="absolute top-3 left-3 bg-brand-primary text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm"><i class="fa-solid fa-thumbtack mr-1"></i> ข่าวเด่นปักหมุด</span>' : ''}
+                            <span class="absolute top-3 right-3 bg-gray-800 text-white text-[9px] font-bold px-2 py-0.5 rounded-md">${item.category}</span>
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-accent group-hover:text-brand-primary transition-colors duration-200 line-clamp-1">${item.title}</h3>
+                                <p class="text-gray-500 text-xs mt-2 line-clamp-3">${item.content}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400">
+                                <span>📅 ${item.date}</span>
+                                <button onclick="alert('แสดงหน้าต่างตัวอย่างรายละเอียดของข่าว: ${item.title}')" class="text-brand-primary font-bold hover:underline">อ่านต่อ <i class="fa-solid fa-arrow-right-long ml-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderData() {
+            // สถิติตัวเลขภาพรวมทั่วไป
+            if (document.getElementById('homeStatMembers')) {
+                document.getElementById('homeStatMembers').innerText = members.length + 1200;
+                document.getElementById('homeStatEvents').innerText = events.length + 46;
+                document.getElementById('homeStatNews').innerText = news.length + 109;
+                document.getElementById('homeStatApplicants').innerText = applicants.length + 319;
+            }
+
+            // สถิติหลังบ้านผู้ดูแลระบบ (Admin Stats)
+            if (document.getElementById('adminStatMembers')) {
+                document.getElementById('adminStatMembers').innerText = members.length + 1200;
+                document.getElementById('adminStatEvents').innerText = events.length;
+                document.getElementById('adminStatNews').innerText = news.length;
+                document.getElementById('adminStatApplicants').innerText = applicants.length;
+            }
+
+            // รายงานแจ้งเหตุภัยพิบัติล่าสุด (Home Feed)
+            const homeFeed = document.getElementById('homeIncidentFeed');
+            if (homeFeed) {
+                homeFeed.innerHTML = '';
+                incidents.forEach(inc => {
+                    homeFeed.innerHTML += `
+                        <div class="p-4 bg-white border border-gray-100 rounded-2xl shadow-sm text-xs space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-orange-50 text-brand-primary font-bold px-2 py-0.5 rounded">${inc.id}</span>
+                                <span class="text-gray-400 font-light">${inc.date}</span>
+                            </div>
+                            <p class="font-bold text-brand-accent">${inc.category}</p>
+                            <p class="text-gray-500">${inc.detail}</p>
+                            <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                                <span class="text-gray-400"><i class="fa-solid fa-map-pin"></i> ${inc.location}</span>
+                                <span class="px-2 py-0.5 rounded-full font-bold ${inc.status === 'เสร็จสิ้น' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${inc.status}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // แสดงหน้าแรก 3 ข่าวเด่นล่าสุด
+            renderNewsContainer(news.slice(0, 3), 'homeNewsContainer');
+
+            // แสดงหน้าข่าวทั้งหมด
+            renderNewsContainer(news, 'allNewsContainer');
+
+            // แสดงหน้ากิจกรรมเปิดรับสมัคร หน้าบ้าน
+            const homeEventsCont = document.getElementById('homeEventsContainer');
+            if (homeEventsCont) {
+                homeEventsCont.innerHTML = '';
+                events.forEach(ev => {
+                    homeEventsCont.innerHTML += `
+                        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold text-brand-primary bg-orange-50 px-2.5 py-1 rounded-full uppercase tracking-wider">${ev.status}</span>
+                                <h3 class="font-bold text-base text-brand-accent mt-2">${ev.title}</h3>
+                                <p class="text-gray-500 text-xs mt-1.5 leading-relaxed">${ev.detail}</p>
+                                <div class="mt-4 grid grid-cols-2 gap-2 text-xs text-gray-400">
+                                    <p><i class="fa-solid fa-calendar mr-1 text-brand-primary"></i> ${ev.date}</p>
+                                    <p><i class="fa-solid fa-location-dot mr-1 text-brand-primary"></i> ${ev.location}</p>
+                                </div>
+                            </div>
+                            <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <span class="text-xs text-gray-500">สมัครแล้ว <strong>${ev.applied}/${ev.maxSeats}</strong> คน</span>
+                                <button onclick="navigateTo('apply-activity')" class="bg-brand-primary text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-orange-600 transition">สมัครสิทธิ์เข้าร่วม</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // แสดงกิจกรรมทั้งหมด (หน้า Events)
+            const allEventsCont = document.getElementById('allEventsContainer');
+            if (allEventsCont) {
+                allEventsCont.innerHTML = '';
+                events.forEach(ev => {
+                    allEventsCont.innerHTML += `
+                        <div class="bg-white p-6 rounded-3xl border-2 border-brand-primary/10 hover:border-brand-primary/40 shadow-sm flex flex-col justify-between transition-all">
+                            <div>
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-bold text-brand-primary bg-orange-100 px-3 py-1 rounded-full uppercase">${ev.status}</span>
+                                    <span class="text-xs text-gray-400">${ev.id}</span>
+                                </div>
+                                <h3 class="font-bold text-lg text-brand-accent mt-3">${ev.title}</h3>
+                                <p class="text-gray-500 text-xs mt-1.5 leading-relaxed">${ev.detail}</p>
+                                <div class="mt-4 space-y-1.5 text-xs text-gray-500">
+                                    <p><i class="fa-solid fa-calendar-days text-brand-primary mr-1.5"></i> <strong>วันเวลา:</strong> ${ev.date}</p>
+                                    <p><i class="fa-solid fa-location-arrow text-brand-primary mr-1.5"></i> <strong>สถานที่:</strong> ${ev.location}</p>
+                                    <p><i class="fa-solid fa-user-group text-brand-primary mr-1.5"></i> <strong>สิทธิ์คงเหลือ:</strong> ${ev.maxSeats - ev.applied} ที่นั่ง</p>
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center">
+                                <span class="text-xs text-gray-400">สมัครแล้ว ${ev.applied} คน</span>
+                                <button onclick="navigateTo('apply-activity')" class="bg-brand-primary hover:bg-orange-600 text-white text-xs font-bold px-4 py-2 rounded-xl">ลงทะเบียน</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // ประวัติสมาชิก (Profile Page)
+            const memHistTable = document.getElementById('memberHistoryTable');
+            if (memHistTable && currentUser) {
+                memHistTable.innerHTML = '';
+                const myApps = applicants.filter(a => a.fullName === currentUser.name);
+                if (myApps.length === 0) {
+                    memHistTable.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-gray-400 text-xs">ท่านยังไม่มีประวัติการสมัครเข้าร่วมกิจกรรมในบัญชีนี้</td></tr>`;
+                } else {
+                    myApps.forEach(a => {
+                        memHistTable.innerHTML += `
+                            <tr>
+                                <td class="p-3 font-semibold">${a.eventTitle}</td>
+                                <td class="p-3 text-gray-400 text-xs">8 มิ.ย. 2569</td>
+                                <td class="p-3"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs font-bold">${a.status}</span></td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            // จัดการข้อมูลหลังบ้าน: ตารางสมาชิก (Admin Control)
+            const adminMemTable = document.getElementById('adminMembersTable');
+            if (adminMemTable) {
+                adminMemTable.innerHTML = '';
+                members.forEach(m => {
+                    adminMemTable.innerHTML += `
+                        <tr>
+                            <td class="p-3 font-semibold text-brand-accent">${m.name}</td>
+                            <td class="p-3 text-gray-500">${m.user}</td>
+                            <td class="p-3 text-gray-400">${m.phone}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${m.status === 'อนุมัติแล้ว' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">${m.status}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex justify-center gap-1">
+                                    <button onclick="changeMemberStatus('${m.id}', 'อนุมัติแล้ว')" class="bg-green-500 hover:bg-green-600 text-white text-[10px] px-2 py-1 rounded-lg">อนุมัติ</button>
+                                    <button onclick="changeMemberStatus('${m.id}', 'ระงับบัญชี')" class="bg-red-500 hover:bg-red-600 text-white text-[10px] px-2 py-1 rounded-lg">ระงับ</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // จัดการข้อมูลหลังบ้าน: ตารางควบคุมข่าว
+            const adminNewsT = document.getElementById('adminNewsTable');
+            if (adminNewsT) {
+                adminNewsT.innerHTML = '';
+                news.forEach(item => {
+                    adminNewsT.innerHTML += `
+                        <tr>
+                            <td class="p-3 font-semibold text-brand-accent max-w-xs truncate">${item.title}</td>
+                            <td class="p-3 text-gray-500 text-xs">${item.category}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.pinned ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-400'}">${item.pinned ? '📌 ปักหมุด' : 'ปกติ'}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex justify-center gap-1.5">
+                                    <button onclick="toggleNewsPin(${item.id})" class="text-xs text-brand-primary hover:underline">ปักหมุด</button>
+                                    <button onclick="deleteNewsItem(${item.id})" class="text-xs text-red-500 hover:underline"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // จัดการข้อมูลหลังบ้าน: ตารางควบคุมกิจกรรม
+            const adminEvT = document.getElementById('adminEventsTable');
+            if (adminEvT) {
+                adminEvT.innerHTML = '';
+                events.forEach(ev => {
+                    adminEvT.innerHTML += `
+                        <tr>
+                            <td class="p-3">
+                                <p class="font-bold text-brand-accent text-xs">${ev.title}</p>
+                                <p class="text-[9px] text-gray-400">รหัสงาน: ${ev.id}</p>
+                            </td>
+                            <td class="p-3 text-gray-500 text-xs">${ev.date}</td>
+                            <td class="p-3 text-xs">${ev.applied} / ${ev.maxSeats}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${ev.status === 'เปิดรับสมัคร' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-500'}">${ev.status}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex justify-center gap-2">
+                                    <button onclick="toggleEventStatus('${ev.id}')" class="text-xs text-brand-primary hover:underline">สลับสิทธิ์</button>
+                                    <button onclick="deleteEventItem('${ev.id}')" class="text-xs text-red-500 hover:underline"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // จัดการข้อมูลหลังบ้าน: รายการไฟล์อัปโหลด
+            const adminFilesCont = document.getElementById('adminFilesList');
+            if (adminFilesCont) {
+                adminFilesCont.innerHTML = '';
+                filesList.forEach(file => {
+                    adminFilesCont.innerHTML += `
+                        <div class="flex justify-between items-center p-2.5 border rounded-xl bg-gray-50">
+                            <div>
+                                <p class="font-bold text-xs">${file.name}</p>
+                                <p class="text-[9px] text-gray-400">${file.type} | ขนาด: ${file.size} | อัปเมื่อ: ${file.date}</p>
+                            </div>
+                            <button onclick="deleteFile('${file.name}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    `;
+                });
+            }
+
+            // จัดการข้อมูลหลังบ้าน: ควบคุมสถานะภัยพิบัติ / การแจ้งเหตุ
+            const adminIncT = document.getElementById('adminIncidentsTable');
+            if (adminIncT) {
+                adminIncT.innerHTML = '';
+                incidents.forEach(inc => {
+                    adminIncT.innerHTML += `
+                        <tr>
+                            <td class="p-3 font-semibold text-brand-primary text-xs">${inc.id}</td>
+                            <td class="p-3">
+                                <p class="font-bold text-xs">${inc.reporter}</p>
+                                <p class="text-[10px] text-gray-400">${inc.phone}</p>
+                            </td>
+                            <td class="p-3">
+                                <span class="bg-gray-100 text-brand-accent text-[9px] font-bold px-1.5 py-0.5 rounded">${inc.category}</span>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-1">${inc.detail}</p>
+                            </td>
+                            <td class="p-3 text-xs text-gray-500">${inc.location}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${inc.status === 'เสร็จสิ้น' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${inc.status}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex justify-center gap-1.5">
+                                    <button onclick="changeIncidentStatus('${inc.id}', 'กำลังดำเนินการ')" class="bg-blue-500 text-white text-[9px] px-2 py-0.5 rounded">ทำ</button>
+                                    <button onclick="changeIncidentStatus('${inc.id}', 'เสร็จสิ้น')" class="bg-green-500 text-white text-[9px] px-2 py-0.5 rounded">จบ</button>
+                                    <button onclick="deleteIncident('${inc.id}')" class="text-red-500 text-xs ml-1"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // Initialize and first boot render
+        window.onload = function() {
+            renderData();
+            updateAuthMenus();
+        };
+    </script>
+</body>
+</html>
